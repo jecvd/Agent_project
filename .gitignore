@@ -1,0 +1,16 @@
+# PyCharm配置文件
+.idea/
+
+# 虚拟环境
+venv/
+
+# Python缓存
+__pycache__/
+*.pyc
+
+# 环境密钥（重要！防止你的API密钥上传到github）
+.env
+
+# 日志、临时文件
+*.log
+*.tmp

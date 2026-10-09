@@ -1,0 +1,11 @@
+fastapi>=0.111
+uvicorn[standard]>=0.30
+pydantic>=2.7
+pydantic-settings>=2.3
+python-dotenv>=1.0
+openai>=1.35          # LLM 与向量化（兼容接口，具体服务商后续在 .env 配）
+qdrant-client>=1.9
+rank-bm25>=0.2.2
+jieba>=0.42.1         # 中文分词，BM25 检索用
+pandas>=2.2
+fastembed>=0.3

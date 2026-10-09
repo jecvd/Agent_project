@@ -1,0 +1,91 @@
+# -*- coding: utf-8 -*-
+"""生成 P0 模拟业务数据：products.csv / orders.csv
+固定随机种子，结果可复现；金额 = 单价 x 数量，保证一致。
+输出 UTF-8（带 BOM），Excel / pandas 均可直接打开。
+"""
+import csv
+import random
+from pathlib import Path
+
+OUT = Path(__file__).resolve().parent
+
+# (名称, 规格, 价格, 库存, 分类)
+PRODUCTS = [
+    ("华为 Mate 60 Pro 5G 手机", "12GB+512GB 雅丹黑", 6999, 120, "数码"),
+    ("苹果 iPhone 15 手机", "128GB 蓝色", 5999, 200, "数码"),
+    ("小米 14 手机", "16GB+512GB 黑色", 3999, 300, "数码"),
+    ("OPPO Reno11 手机", "12GB+256GB 月光宝石", 2799, 180, "数码"),
+    ("vivo X100 手机", "12GB+256GB 星际蓝", 3999, 150, "数码"),
+    ("联想拯救者 Y7000P 笔记本", "i7-13650HX/16G/1T/RTX4060", 8499, 60, "数码"),
+    ("MacBook Air 13 英寸", "M3/16G/512G 午夜色", 9499, 40, "数码"),
+    ("戴尔 XPS 13 笔记本", "i7-1360P/16G/512G", 8999, 25, "数码"),
+    ("华为智能手表 GT4", "46mm 黑色氟橡胶表带", 1488, 260, "数码"),
+    ("索尼 WH-1000XM5 降噪耳机", "黑色", 2499, 90, "数码"),
+    ("Kindle Paperwhite 电子书", "16GB 墨黑色", 1099, 140, "数码"),
+    ("任天堂 Switch OLED 游戏机", "白色", 2099, 55, "数码"),
+    ("美的 1.5 匹变频空调", "KFR-35GW 一级能效", 2699, 45, "家电"),
+    ("海尔 501L 十字对开门冰箱", "一级能效 星蕴银", 4499, 30, "家电"),
+    ("小米电视 S 65 英寸", "4K 144Hz 游戏电视", 2999, 80, "家电"),
+    ("苏泊尔 IH 电饭煲", "4L 球形釜", 499, 350, "家电"),
+    ("戴森 V12 Detect Slim 吸尘器", "轻量版 蓝色", 2990, 35, "家电"),
+    ("飞利浦 HX9912 电动牙刷", "声波 钻石系列", 1299, 110, "家电"),
+    ("小米空气净化器 4 Pro", "适用 60㎡", 1299, 95, "家电"),
+    ("美的 4L 加湿器", "静音款", 199, 220, "家电"),
+    ("优衣库男士无缝羽绒服", "L 藏青色", 599, 400, "服饰"),
+    ("李宁赤兔 7 跑步鞋", "42 荧光绿", 399, 320, "服饰"),
+    ("安踏速干运动长裤", "XL 黑色", 199, 280, "服饰"),
+    ("波司登女士长款羽绒服", "M 米白", 1299, 130, "服饰"),
+    ("ZARA 简约风连衣裙", "S 白色", 499, 160, "服饰"),
+    ("兰蔻小黑瓶精华 50ml", "50ml 标准装", 1080, 90, "美妆"),
+    ("雅诗兰黛小棕瓶精华 75ml", "75ml", 1250, 75, "美妆"),
+    ("SK-II 神仙水 230ml", "230ml", 1590, 60, "美妆"),
+    ("完美日记丝绒唇釉", "V08 桃金", 89, 600, "美妆"),
+    ("欧莱雅复颜玻尿酸面霜", "50ml 滋润型", 269, 240, "美妆"),
+    ("三只松鼠坚果大礼包", "1898g 30 袋装", 129, 500, "食品"),
+    ("良品铺子零食大礼包", "1180g 20 袋装", 89, 480, "食品"),
+    ("农夫山泉天然水", "550ml x 24 瓶", 45, 800, "食品"),
+    ("蒙牛特仑苏纯牛奶", "250ml x 12 盒", 65, 420, "食品"),
+    ("宜家 LAGKAPTEN 书桌", "120x60cm 白色", 499, 70, "家居"),
+    ("网易严选泰国乳胶床垫", "180x200cm 5cm 厚", 1599, 20, "家居"),
+    ("膳魔师保温杯 500ml", "黑色", 259, 210, "家居"),
+    ("迪卡侬户外双人帐篷", "2-3 人 防水", 349, 85, "家居"),
+    ("得力桌面收纳盒", "三层 透明", 39, 450, "家居"),
+    ("晨光中性笔 12 支装", "0.5mm 黑色", 25, 1000, "家居"),
+]
+
+STATUS_POOL = ["已签收", "已发货", "已支付", "待支付", "售后中", "已退款"]
+CUSTOMERS = ["张伟", "李娜", "王芳", "刘洋", "陈静", "杨帆", "赵磊", "黄敏", "周涛", "吴迪",
+             "徐婷", "孙浩", "马丽", "朱军", "胡雪", "郭强", "林琳", "何勇", "高倩", "罗成"]
+
+
+def main():
+    random.seed(20260917)
+
+    with open(OUT / "products.csv", "w", newline="", encoding="utf-8-sig") as f:
+        w = csv.writer(f)
+        w.writerow(["product_id", "name", "spec", "price", "stock", "category"])
+        for i, (name, spec, price, stock, category) in enumerate(PRODUCTS, start=1):
+            w.writerow([f"P{i:03d}", name, spec, price, stock, category])
+
+    with open(OUT / "orders.csv", "w", newline="", encoding="utf-8-sig") as f:
+        w = csv.writer(f)
+        w.writerow(["order_id", "product_id", "quantity", "amount", "status", "customer", "order_date"])
+        for i in range(1, 41):
+            pid = random.randint(1, len(PRODUCTS))
+            name, spec, price, stock, category = PRODUCTS[pid - 1]
+            quantity = random.randint(1, 3)
+            amount = price * quantity
+            status = random.choices(STATUS_POOL, weights=[18, 8, 5, 4, 3, 2], k=1)[0]
+            customer = random.choice(CUSTOMERS)
+            month = random.randint(8, 9)
+            day = random.randint(1, 28)
+            date = f"2026-{month:02d}-{day:02d}"
+            w.writerow([f"O2026{month:02d}{day:02d}{i:03d}", f"P{pid:03d}", quantity, amount, status, customer, date])
+
+    print("products.csv rows:", len(PRODUCTS))
+    print("orders.csv rows: 40")
+    print("output dir:", OUT)
+
+
+if __name__ == "__main__":
+    main()
