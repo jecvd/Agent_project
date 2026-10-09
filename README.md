@@ -207,6 +207,3 @@ python -m app.graph
 - [ ] **成本控制**：Token 用量统计与预算限制
 - [ ] **流式输出**：SSE 打字机效果
 
-## 📄 License
-
-MIT
