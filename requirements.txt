@@ -9,3 +9,7 @@ rank-bm25>=0.2.2
 jieba>=0.42.1         # 中文分词，BM25 检索用
 pandas>=2.2
 fastembed>=0.3
+
+# Agent 编排（LangGraph）
+langgraph>=0.2.0
+langchain-core>=0.3.0
